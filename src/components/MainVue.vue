@@ -115,7 +115,7 @@ const isDisliked = ref(false);
   // .main__bottom
 
   &__bottom {
-    margin-top: 10px;
+    margin-top: 25px;
   }
 }
 
@@ -205,7 +205,7 @@ const isDisliked = ref(false);
 
 .telegram-btn {
   display: flex;
-  padding: 10px;
+  padding: 15px;
   align-items: center;
   justify-content: center;
   gap: 16px;
