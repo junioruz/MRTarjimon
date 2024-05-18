@@ -3,12 +3,12 @@
     <div class="main__input">
       <textarea v-model="inputText" placeholder="Bu yerga matn kiriting"></textarea>
       <div class="input-bottom">
-        <div class="load">
+        <div class="load" @click="restoreText">
           <lord-icon src="https://cdn.lordicon.com/dafdkyyt.json" trigger="hover" colors="primary:#b4b4b4"
             style="width:25px;height:25px">
           </lord-icon>
         </div>
-        <div class="delete">
+        <div class="delete" @click="clearText">
           <lord-icon src="https://cdn.lordicon.com/wpyrrmcq.json" trigger="hover" colors="primary:#b4b4b4"
             style="width:24px;height:24px">
           </lord-icon>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="main__text">
-      <div class="translateText"></div>
+      <div :class="{ 'translateText': true, 'faded': copied }">{{ inputText }}</div>
       <div class="main__btn">
         <div class="status">
           <div class="like-btn">
@@ -27,7 +27,7 @@
             <i class='bx bx-dislike'></i>
           </div>
         </div>
-        <div class="copy-btn">
+        <div class="copy-btn" @click="copyText">
           <lord-icon src="https://cdn.lordicon.com/xpgofwru.json" trigger="hover" colors="primary:#b4b4b4" style="
             width:25px;height:25px">
           </lord-icon>
@@ -41,10 +41,10 @@
         <i class='bx bx-transfer-alt bx-rotate-180'></i>
         <p>Kiril</p>
       </div>
-      <a class="telegram-btn" href="https://t.me/mrtarjimon_bot">
+      <!-- <a class="telegram-btn" href="https://t.me/mrtarjimon_bot">
         <img src="../img/telegram-logo.svg" alt="telegram icon">
         Telegram Bot
-      </a>
+      </a> -->
     </div>
   </div>
 </template>
@@ -53,8 +53,40 @@
 
 import { ref } from 'vue';
 
-const isLiked = ref(false);
-const isDisliked = ref(false);
+let inputText = ref('');
+let lastInputText = ref('');
+
+let copied = ref(false);
+
+// delete function
+function clearText() {
+  lastInputText.value = inputText.value;
+  inputText.value = '';
+}
+
+// load function
+function restoreText() {
+  if (lastInputText.value) {
+    inputText.value = lastInputText.value;
+  }
+}
+
+// nusxa olish
+function copyText() {
+  if (inputText.value) {
+    navigator.clipboard.writeText(inputText.value).then(() => {
+      copied.value = true;
+      setTimeout(() => { copied.value = false; }, 2000);
+      alert('Matndan nusxa olindi');
+    }).catch(err => {
+      console.error('Nusxalashda xatolik yuz berdi: ', err);
+      alert('Xatolik: Matnni nusxalab bo`lmadi.');
+        });
+  } else {
+    alert('Matn kiritilmagan');
+  }
+}
+
 
 </script>
 
@@ -151,7 +183,20 @@ const isDisliked = ref(false);
   }
 }
 
-.translateText {}
+.translateText {
+  overflow-y: scroll;
+  background: none;
+  padding: 10px 10px;
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 8px;
+  width: 100%;
+  height: 185px;
+  resize: none;
+}
 
 .status {
   display: flex;
@@ -188,15 +233,20 @@ const isDisliked = ref(false);
   align-items: center;
   gap: 26px;
   justify-content: center;
-  padding: 16px;
+  // padding: 16px;
   color: #FFF;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: 19.5px;
   text-transform: capitalize;
-  border-radius: 6px;
-  background: rgba(13, 153, 255, 0.1);
+  // border-radius: 6px;
+  // background: rgba(13, 153, 255, 0.1);
+
+  border-radius: 12px;
+  width: 100%;
+  background: #242424;
+  padding: 20px;
 }
 
 .bx-transfer-alt {}
@@ -224,6 +274,10 @@ const isDisliked = ref(false);
     width: 30px;
     height: 30px;
   }
+}
+
+.faded {
+  opacity: 0.5;
 }
 
 </style>

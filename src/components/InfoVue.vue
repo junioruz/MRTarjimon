@@ -27,19 +27,6 @@
                     fill="#242426"></path>
             </svg>
         </div>
-        <!-- <svg class="file" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1351 900"
-            fill="none">
-            <path
-                d="M415.485 67.3828H42C20.9794 67.3828 3.90652 84.362 3.79078 105.382L0.221447 753.663C0.0993427 775.84 18.0434 793.883 40.2208 793.883H1310.5C1332.59 793.883 1350.5 775.974 1350.5 753.883V40.8828C1350.5 18.7914 1332.59 0.882812 1310.5 0.882812H497.015C481.197 0.882812 466.865 10.2039 460.451 24.6628L452.049 43.6028C445.635 58.0617 431.303 67.3828 415.485 67.3828Z"
-                fill="url(#paint0_linear_444_9983)"></path>
-            <defs>
-                <linearGradient id="paint0_linear_444_9983" x1="1365.98" y1="23.0295" x2="-246.118" y2="456.641"
-                    gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#242424"></stop>
-                    <stop offset="1" stop-color="#242426"></stop>
-                </linearGradient>
-            </defs>
-        </svg> -->
         <div class="info__bot">
             <h2>Telegram Bot</h2>
             <p>Matningizni muvaffaqiyatli va qulay tarjima qilish uchun
