@@ -76,8 +76,8 @@ function copyText() {
   if (inputText.value) {
     navigator.clipboard.writeText(inputText.value).then(() => {
       copied.value = true;
-      setTimeout(() => { copied.value = false; }, 2000);
-      alert('Matndan nusxa olindi');
+      setTimeout(() => { copied.value = false; }, 300);
+      // alert('Matndan nusxa olindi');
     }).catch(err => {
       console.error('Nusxalashda xatolik yuz berdi: ', err);
       alert('Xatolik: Matnni nusxalab bo`lmadi.');
@@ -86,7 +86,6 @@ function copyText() {
     alert('Matn kiritilmagan');
   }
 }
-
 
 </script>
 
@@ -277,7 +276,7 @@ function copyText() {
 }
 
 .faded {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 </style>
