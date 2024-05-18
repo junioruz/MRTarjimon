@@ -64,7 +64,7 @@ import { ref } from 'vue'
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 
   // .header__left
 
