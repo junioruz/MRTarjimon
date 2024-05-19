@@ -3,45 +3,63 @@
 
         <div class="modal-content">
             <div class="comment__title">
-                <p>Xizmatda qanday xatolik?</p>
+                <p>{{ $t('message.error') }}</p>
                 <span @click="closeModal" class="close">×</span>
             </div>
             <div class="modal__line"></div>
             <div class="comment__radio">
                 <div class="feedback">
                     <input type="radio" name="unical" id="feedback_2">
-                    <label for="feedback_2">Xatoliklar mavjud</label>
+                    <label for="feedback_2">
+                        {{ $t('message.errorsAvailable') }}
+                    </label>
                 </div>
                 <div class="feedback">
                     <input type="radio" name="unical" id="feedback_3">
-                    <label for="feedback_3">Harflar hato</label>
+                    <label for="feedback_3">
+                        {{ $t('message.spellingMistakes') }}
+                    </label>
                 </div>
                 <div class="feedback">
                     <input type="radio" name="unical" id="feedback_4">
-                    <label for="feedback_4">Translit qoidalariga amal qilinmagan</label>
+                    <label for="feedback_4">
+                        {{ $t('message.transliterationErrors') }}
+                    </label>
                 </div>
                 <div class="feedback">
                     <input type="radio" name="unical" id="feedback_5">
-                    <label for="feedback_5">Istisno soʻzlardagi xatoliklar</label>
+                    <label for="feedback_5">
+                        {{ $t('message.exceptionErrors') }}
+                    </label>
                 </div>
                 <div class="feedback">
                     <input @click="feedbackOpen" type="radio" name="unical" id="feedback_6">
-                    <label for="feedback_6">Boshqa...</label>
+                    <label for="feedback_6">
+                        {{ $t('message.other') }}
+                    </label>
                 </div>
                 <div v-show="feedbackInp" class="feedback__comment" style="display: flex;">
-                    <label>Imkoni boʻlsa xatolik haqida batafsil yozing:</label>
+                    <label>
+                        {{ $t('message.detailedError') }}
+                    </label>
                     <textarea style="resize: none;" id="" rows="5"></textarea>
-                    <label>Siz bilan qanday bogʻlanish mumkin?</label>
-                    <input type="text" placeholder="Telefon, e-mail yoki Telegram">
+                    <label>
+                        {{ $t('message.contact') }}
+                    </label>
+                    <input type="text" :placeholder="$t('message.contactInfo') ">
                 </div>
             </div>
             <div class="modal__line-footer"></div>
             <div class="comment__footer">
-                <button @click="closeModal" class="comment__footer-close">Yopish</button>
-                <button @click="thankYou" class="comment__footer-send">Yuborish</button>
+                <button @click="closeModal" class="comment__footer-close">
+                    {{ $t('message.close') }}
+                </button>
+                <button @click="thankYou" class="comment__footer-send">
+                    {{ $t('message.send') }}
+                </button>
             </div>
             <div v-if="thankYouMessage" class="thank-you">
-                Fikringiz uchun rahmat! 🙌
+                {{ $t('message.thankYou') }}
             </div>
         </div>
 
@@ -82,7 +100,7 @@ function feedbackOpen() {
 
 .thank-you {
     color: #FFF;
-    font-family: Poppins;
+    font-family: Montserrat;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
@@ -115,7 +133,7 @@ function feedbackOpen() {
         width: 100%;
         justify-content: space-between;
         color: #FFF;
-        font-family: Poppins;
+        font-family: Montserrat;
         font-size: 20px;
         font-style: normal;
         font-weight: 500;
@@ -151,7 +169,7 @@ function feedbackOpen() {
     &__footer-close,
     &__footer-send {
         text-align: center;
-        font-family: Poppins;
+        font-family: Montserrat;
         font-size: 14px;
         font-style: normal;
         font-weight: 500;
@@ -194,7 +212,7 @@ function feedbackOpen() {
 
 .modal-content {
     margin: 0 auto;
-    max-width: 410px;
+    max-width: 360px;
     width: 100%;
     border-radius: 20px;
     border: 1px solid #4E4E4E;
@@ -211,7 +229,7 @@ function feedbackOpen() {
 
 .feedback {
 
-    font-family: Poppins;
+    font-family: Montserrat;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -246,7 +264,7 @@ function feedbackOpen() {
         gap: 10px;
 
         label {
-            font-family: Poppins;
+            font-family: Montserrat;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
@@ -258,7 +276,7 @@ function feedbackOpen() {
             border-radius: 6px;
             background: #171717;
             color: #ffffffb1;
-            font-family: Poppins;
+            font-family: Montserrat;
             font-size: 15px;
             font-style: normal;
             font-weight: 400;
@@ -270,7 +288,7 @@ function feedbackOpen() {
             border-radius: 6px;
             background: #171717;
             color: #ffffffb1;
-            font-family: Poppins;
+            font-family: Montserrat;
             font-size: 15px;
             font-style: normal;
             font-weight: 400;

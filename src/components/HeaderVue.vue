@@ -34,21 +34,27 @@
 <script setup lang="js">
 
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n';
+
     const languages = ref([
-      { name: 'Ўз', code: 'kiril'},
+      { name: 'O`z', code: 'uzLatn' },
+      { name: 'Ўз', code: 'uzCyrl'},
       { name: 'Ru', code: 'ru'},
       { name: 'En', code: 'en'}
     ]);
-    let selectedLanguage = ref('O`z');
+    const selectedLanguage = ref(languages.value[0].name)
     let isOpen = ref(false);
+
+    const { locale } = useI18n();
 
     function toggleDropdown() {
       isOpen.value = !isOpen.value
     };
 
     function selectLanguage(language) {
-      selectedLanguage = language.name;
-      isOpen.value = false;
+      selectedLanguage.value = language.name;
+      locale.value = language.code; // Global tilni yangilash
+      isOpen.value = false; // Dropdown-ni yopish
     }
 
 
@@ -78,10 +84,10 @@ import { ref } from 'vue'
 
   &__logo {
     color: #FFF;
-    font-family: Poppins;
+    font-family: Montserrat;
     font-size: 24px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 25.5px;
   }
 
@@ -99,7 +105,6 @@ import { ref } from 'vue'
   &__dropdown {
     display: flex;
     align-items: center;
-    // font-family: Roboto;
     font-size: 18px;
     font-style: normal;
     font-weight: 500;
@@ -135,7 +140,7 @@ import { ref } from 'vue'
   // .header__lang-item
 
   &__lang-item {
-    font-family: Roboto;
+    font-family: Montserrat;
     color: rgba(255, 255, 255, 0.7);
     font-size: 16px;
     font-style: normal;

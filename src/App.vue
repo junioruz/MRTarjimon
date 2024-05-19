@@ -18,6 +18,7 @@ import InfoVue from './components/InfoVue.vue'
 import ModalVue from './components/ModalVue.vue'
 
 
+
 export default {
   name: 'App',
   components: {

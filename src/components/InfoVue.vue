@@ -4,19 +4,13 @@
             <div class="line"></div>
         </div>
         <div class="about__container">
-            <div class="about__title">MR TARJIMON loyihasi</div>
-            <p>-- MRTarjimon.uz sayti orqali siz so‘zlarni o‘zbek kirill yozuvidan o‘zbek lotin yozuviga
-                o‘tkazishingiz
-                mumkin.</p>
+            <div class="about__title">MRTarjimon{{ $t('message.projectTitle') }}</div>
+            <p>-- MRTarjimon.uz {{ $t('message.aboutProject') }}</p>
             <p>
-                -- MRTarjimon.uz — foydalanuvchilarga berilgan matnni kirilldan lotinga va aksincha o‘girish
-                xizmatini
-                taklif etadi.
+                -- MRTarjimon.uz — {{ $t('message.suggestions') }}
             </p>
             <p>
-                -- Loyihani rivojlantirish bo‘yicha taklif va fikrlaringizni <a class="support"
-                    href="t.me/mrtarjimon_bot">Telegramga</a>
-                yozing.
+                -- {{ $t('message.suggestions') }}
             </p>
         </div>
         <div class="info__vector">
@@ -29,14 +23,11 @@
         </div>
         <div class="info__bot">
             <h2>Telegram Bot</h2>
-            <p>Matningizni muvaffaqiyatli va qulay tarjima qilish uchun
-                loyihammizning telegram botini tavsiya qilamiz
+            <p>{{ $t('message.telegramBotRecommendation') }}
             </p>
-            <p>-- Matnni kerakli alifboga(kiril, lotin) o‘girish imkoni bor. 🆎</p>
-            <p>-- Audioni matnga o'tkazish 🔊🔁📄</p>
-            <p>-- @MRTarjimon_bot nafaqat tekstlarni, balki quyidagi
-                fayllarni ham avtomatik lotindan krillga yoki krilldan lotinga
-                o'girish funksiyalariga ega: 📂 .dock; .xls; .pptx; .pdf
+            <p>-- {{ $t('message.changeText') }}</p>
+            <p>-- {{ $t('message.convertAudio') }}</p>
+            <p>-- {{ $t('message.autoConvertFiles') }}
             </p>
             <a class="telegram-btn" href="https://t.me/mrtarjimon_bot">
                 <img src="../img/telegram-logo.svg" alt="telegram icon">
@@ -204,7 +195,7 @@
 
         p {
             color: #B3B3B3;
-            font-family: Poppins;
+            font-family: Montserrat;
             font-size: 17px;
             font-style: normal;
             font-weight: 400;
@@ -223,7 +214,7 @@
         a {
             color: #B3B3B3;
             text-align: left;
-            font-family: Poppins;
+            font-family: Montserrat;
             font-size: 17px;
             font-style: normal;
             font-weight: 400;

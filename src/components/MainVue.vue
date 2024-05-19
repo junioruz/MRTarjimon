@@ -1,7 +1,7 @@
 <template>
   <div class="main container">
     <div class="main__input">
-      <textarea v-model="inputText" placeholder="Bu yerga matn kiriting"></textarea>
+      <textarea v-model="inputText" :placeholder="$t('message.placeholder')"></textarea>
       <div class="input-bottom">
         <div class="load" @click="restoreText">
           <lord-icon src="https://cdn.lordicon.com/dafdkyyt.json" trigger="hover" colors="primary:#b4b4b4"
@@ -20,15 +20,17 @@
       <div :class="{ 'translateText': true, 'faded': copied }">{{ apiText }}</div>
       <div class="main__btn">
         <div class="status">
-          <div class="like-btn">
-            <i class='bx bx-like'></i>
+          <div :class="{ 'like-btn': true }">
+            <i @click="likeActivF" :class="{ 'bx bx-like': true, 'bxs-like': likStatus }"></i>
+            {{ likeCount }}
           </div>
           <div class="dislike-btn" @click="openModal">
-            <i class='bx bx-dislike'></i>
+            <i @click="dislikeActiv" :class="{ 'bx bx-dislike': true, 'bxs-dislike': dislikeStatus }"></i>
           </div>
         </div>
         <ModalVue :isVisible="modalVisible" @update:isVisible="modalVisible = $event" />
         <div class="copy-btn" @click="copyText">
+          {{ $t('message.copy') }}
           <lord-icon src="https://cdn.lordicon.com/xpgofwru.json" trigger="hover" colors="primary:#b4b4b4" style="
             width:25px;height:25px">
           </lord-icon>
@@ -52,10 +54,12 @@
 
 <script setup lang="js">
 
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import ModalVue from './ModalVue.vue'
 import { debounce } from 'lodash';
+import { createI18n } from 'vue-i18n';
+import confetti from "https://esm.run/canvas-confetti@1";
 
 components: {
   ModalVue
@@ -66,32 +70,81 @@ let lastInputText = ref('');
 let copied = ref(false);
 let modalVisible = ref(false);
 const apiText = ref('');
+let copy = ref('nusxa olish')
+const likStatus = ref(false)
+const dislikeStatus = ref(false)
+let likeCount = ref(0)
+
+onMounted(() => {
+  likeCount.value = Number(localStorage.getItem('likes')) || 0;
+  dislikeStatus.value = Boolean(localStorage.getItem('dislikeStatus') || false);
+  likStatus.value = Boolean(localStorage.getItem('likStatus') || false);
+});
+
+function likeActivF() {
+  likStatus.value = !likStatus.value
+  localStorage.setItem('likStatus', likStatus.value);
+  localStorage.setItem('likStatus', !dislikeStatus.value);
+  const rect = event.target.getBoundingClientRect();
+
+  if (dislikeStatus.value) {
+    dislikeStatus.value = !dislikeStatus.value;
+    localStorage.setItem('likStatus', !likStatus.value);
+    localStorage.setItem('dislikeStatus', dislikeStatus.value);
+  }
+
+  const origin = {
+    x: (rect.left + rect.right) / 2 / window.innerWidth,
+    y: (rect.top + rect.bottom) / 2 / window.innerHeight
+  };
+
+  if (likStatus.value) {
+    likeCount.value++
+    localStorage.setItem('likes', likeCount.value);
+    confetti({
+      particleCount: 100,
+      angle: 90,        // Chiqish burchagi, vertikal
+      spread: 70, 
+      origin: origin
+    });
+  } else {
+    likeCount.value = likeCount.value > 0 ? likeCount.value-1 : likeCount.value
+    localStorage.setItem('likes', likeCount.value);
+  }
+}
+
+function dislikeActiv() {
+  likeCount.value = likeCount.value > 0 ? likeCount.value - 1 : likeCount.value
+  localStorage.setItem('likes', likeCount.value);
+  dislikeStatus.value = !dislikeStatus.value;
+  localStorage.setItem('dislikeStatus', dislikeStatus.value);
+  localStorage.setItem('dislikeStatus', !likStatus.value);
+  if (likStatus.value) {
+    likStatus.value = !likStatus.value
+    localStorage.setItem('likStatus', likStatus.value);
+    localStorage.setItem('likStatus', !dislikeStatus.value);
+  }
+}
 
 const props = defineProps(['isVisible']);
 const emit = defineEmits(['update:isVisible']);
 
 // translate api
-const translateText = async () => {
+const sendRequest = async () => {
   try {
-    const response = await axios.post("https://libretranslate.com/translate", {
-      q: inputText.value,
-      source: "auto",
-      target: "en",
-      format: "text"
-    }, {
-      headers: { "Content-Type": "application/json" }
+    const response = await axios.post('http://128.140.72.180:8070/latin', {
+      word: inputText.value
     });
-    apiText.value = response.data.translatedText;
+    apiText.value = response.data.result;
   } catch (error) {
-    console.error('Translation error:', error);
-    apiText.value = 'Tarjima qilishda xatolik!';
+    console.error('API so`rovda xatolik: ', error);
+    // apiText.value = 'Xatolik yuz berdi';
   }
-}
+};
 
-// Debounce funksiyasi orqali translateText funksiyasini chaqirish
-const debouncedTranslateText = debounce(translateText, 500); // 500 ms debouncing
+const debouncedTranslateText = debounce(sendRequest, 5);
 
-watch(inputText, debouncedTranslateText);
+watch(() => inputText.value, debouncedTranslateText);
 
 // delete function
 function clearText() {
@@ -246,14 +299,28 @@ function openModal() {
 
 .like-btn, .dislike-btn,
 .copy-btn {
-  width: 35px;
-  height: 35px;
+  color: #ffffff76;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  gap: 3px;
   padding: 5px;
   border-radius: 6px;
   background: #1f1f1f;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.like-btn,
+.dislike-btn,
+.copy-btn:active {
+  transform: scale(1.0);
+}
+
+.like-activ {
+  background: #729856d3;
 }
 
 .bx {}
