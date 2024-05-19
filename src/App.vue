@@ -15,6 +15,7 @@
 import HeaderVue from './components/HeaderVue.vue';
 import MainVue from './components/MainVue.vue';
 import InfoVue from './components/InfoVue.vue'
+import ModalVue from './components/ModalVue.vue'
 
 
 export default {
@@ -22,7 +23,8 @@ export default {
   components: {
     HeaderVue,
     MainVue,
-    InfoVue
+    InfoVue,
+    ModalVue
   }
 }
 </script>

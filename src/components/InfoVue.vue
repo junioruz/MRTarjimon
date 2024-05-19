@@ -94,6 +94,7 @@
 
 .info {
     position: relative;
+    
 }
 
 .file {

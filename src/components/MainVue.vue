@@ -17,16 +17,17 @@
     </div>
 
     <div class="main__text">
-      <div :class="{ 'translateText': true, 'faded': copied }">{{ inputText }}</div>
+      <div :class="{ 'translateText': true, 'faded': copied }">{{ apiText }}</div>
       <div class="main__btn">
         <div class="status">
           <div class="like-btn">
             <i class='bx bx-like'></i>
           </div>
-          <div class="dislike-btn">
+          <div class="dislike-btn" @click="openModal">
             <i class='bx bx-dislike'></i>
           </div>
         </div>
+        <ModalVue :isVisible="modalVisible" @update:isVisible="modalVisible = $event" />
         <div class="copy-btn" @click="copyText">
           <lord-icon src="https://cdn.lordicon.com/xpgofwru.json" trigger="hover" colors="primary:#b4b4b4" style="
             width:25px;height:25px">
@@ -51,12 +52,46 @@
 
 <script setup lang="js">
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import axios from 'axios';
+import ModalVue from './ModalVue.vue'
+import { debounce } from 'lodash';
+
+components: {
+  ModalVue
+}
 
 let inputText = ref('');
 let lastInputText = ref('');
-
 let copied = ref(false);
+let modalVisible = ref(false);
+const apiText = ref('');
+
+const props = defineProps(['isVisible']);
+const emit = defineEmits(['update:isVisible']);
+
+// translate api
+const translateText = async () => {
+  try {
+    const response = await axios.post("https://libretranslate.com/translate", {
+      q: inputText.value,
+      source: "auto",
+      target: "en",
+      format: "text"
+    }, {
+      headers: { "Content-Type": "application/json" }
+    });
+    apiText.value = response.data.translatedText;
+  } catch (error) {
+    console.error('Translation error:', error);
+    apiText.value = 'Tarjima qilishda xatolik!';
+  }
+}
+
+// Debounce funksiyasi orqali translateText funksiyasini chaqirish
+const debouncedTranslateText = debounce(translateText, 500); // 500 ms debouncing
+
+watch(inputText, debouncedTranslateText);
 
 // delete function
 function clearText() {
@@ -85,6 +120,11 @@ function copyText() {
   } else {
     alert('Matn kiritilmagan');
   }
+}
+
+// open modal
+function openModal() {
+  modalVisible.value = true;
 }
 
 </script>
