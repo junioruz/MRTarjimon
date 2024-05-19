@@ -43,6 +43,26 @@
                 Telegram Bot
             </a>
         </div>
+
+        <div class="line" style="margin-top: 60px;"></div>
+
+        <footer class="footer">
+            <div class="footer__info">
+                <p style="margin: 0 auto;">© MR Tarjimon, 2024</p>
+                <div class="footer__social">
+                    <a href="https://github.com">
+                        <img src="../img/github.png" alt="">
+                    </a>
+                    <a href="https://linkedin.com">
+                        <img src="../img/linkedin.png" alt="">
+                    </a>
+                    <a href="https://twitter.com">
+                        <img src="../img/twitter.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </footer>
+
     </div>
 </template>
 
@@ -166,6 +186,70 @@
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.footer {
+
+    // .footer__info
+
+    &__info {
+        display: flex;
+        width: 66.5%;
+        margin: 0 auto;
+        flex-direction: column;
+        text-align: center;
+        margin-top: 50px;
+        padding-bottom: 50px;
+        gap: 15px;
+
+        p {
+            color: #B3B3B3;
+            font-family: Poppins;
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30.8px;
+        }
+    }
+
+    &__link {
+        display: flex;
+        width: 66.5%;
+        margin: 0 auto;
+        margin-top: 70px;
+        justify-content: space-around;
+        align-items: center;
+
+        a {
+            color: #B3B3B3;
+            text-align: left;
+            font-family: Poppins;
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30.8px;
+        }
+
+        a:hover {
+            color: #FFF;
+            transition: 0.3s;
+        }
+    }
+
+    &__line {
+        margin: 0 auto;
+        margin-top: 150px;
+        width: 66.5%;
+        display: flex;
+        height: 1px;
+        background: #4D4D4D;
+    }
+
+    &__social {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+    }
 }
 
 </style>
