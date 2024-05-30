@@ -9,31 +9,32 @@
             <div class="modal__line"></div>
             <div class="comment__radio">
                 <div class="feedback">
-                    <input type="radio" name="unical" id="feedback_2">
+                    <input type="radio" v-model="feedbackRadio" value="odatiy" name="unical" id="feedback_2">
                     <label for="feedback_2">
                         {{ $t('message.errorsAvailable') }}
                     </label>
                 </div>
                 <div class="feedback">
-                    <input type="radio" name="unical" id="feedback_3">
+                    <input type="radio" v-model="feedbackRadio" value="imlo" name="unical" id="feedback_3">
                     <label for="feedback_3">
                         {{ $t('message.spellingMistakes') }}
                     </label>
                 </div>
                 <div class="feedback">
-                    <input type="radio" name="unical" id="feedback_4">
+                    <input type="radio" v-model="feedbackRadio" value="translit" name="unical" id="feedback_4">
                     <label for="feedback_4">
                         {{ $t('message.transliterationErrors') }}
                     </label>
                 </div>
                 <div class="feedback">
-                    <input type="radio" name="unical" id="feedback_5">
+                    <input type="radio" v-model="feedbackRadio" value="istisno" name="unical" id="feedback_5">
                     <label for="feedback_5">
                         {{ $t('message.exceptionErrors') }}
                     </label>
                 </div>
                 <div class="feedback">
-                    <input @click="feedbackOpen" type="radio" name="unical" id="feedback_6">
+                    <input @click="feedbackOpen" v-model="feedbackRadio" value="boshqa" type="radio" name="unical"
+                        id="feedback_6">
                     <label for="feedback_6">
                         {{ $t('message.other') }}
                     </label>
@@ -42,11 +43,12 @@
                     <label>
                         {{ $t('message.detailedError') }}
                     </label>
-                    <textarea style="resize: none;" id="" rows="5"></textarea>
+                    <textarea v-model="feedbackText" style="resize: none;" class="feedbackText" rows="5"></textarea>
                     <label>
                         {{ $t('message.contact') }}
                     </label>
-                    <input type="text" :placeholder="$t('message.contactInfo') ">
+                    <input v-model="feedbackUser" class="feedbackUser" type="text"
+                        :placeholder="$t('message.contactInfo')">
                 </div>
             </div>
             <div class="modal__line-footer"></div>
@@ -68,15 +70,30 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const thankYouMessage = ref(false)
+const feedbackText = ref('')
+const feedbackUser = ref('')
+const feedbackRadio = ref(null)
+
+watch(feedbackRadio, (newVal) => {
+    console.log('salom', newVal)
+})
+
 
 function thankYou() {
-    thankYouMessage.value = true;
-    setTimeout(() => {
-        closeModal();
-    }, 2000);
+    if (feedbackInp.value && feedbackText.value && feedbackUser.value) {
+        thankYouMessage.value = true;
+        setTimeout(() => {
+            closeModal();
+        }, 2000);
+    } else {
+        thankYouMessage.value = true;
+        setTimeout(() => {
+            closeModal();
+        }, 2000);
+    }
 }
 
 const props = defineProps({
@@ -86,6 +103,12 @@ const emit = defineEmits(['update:isVisible']);
 
 function closeModal() {
     emit('update:isVisible', false);
+    feedbackText.value = ''
+    feedbackUser.value = ''
+    feedbackInp.value = false
+    thankYouMessage.value = false
+    feedbackRadio.value = null
+
 }
 
 const feedbackInp = ref(false)
@@ -97,7 +120,6 @@ function feedbackOpen() {
 </script>
 
 <style lang="scss" scoped>
-
 .thank-you {
     color: #FFF;
     font-family: Montserrat;
@@ -296,5 +318,4 @@ function feedbackOpen() {
         }
     }
 }
-
 </style>

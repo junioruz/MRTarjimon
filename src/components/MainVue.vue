@@ -1,48 +1,50 @@
 <template>
   <div class="main container">
-    <div class="main__input">
-      <textarea v-model="inputText" :placeholder="$t('message.placeholder')"></textarea>
-      <div class="input-bottom">
-        <div class="load" @click="restoreText">
-          <lord-icon src="https://cdn.lordicon.com/dafdkyyt.json" trigger="hover" colors="primary:#b4b4b4"
-            style="width:25px;height:25px">
-          </lord-icon>
-        </div>
-        <div class="delete" @click="clearText">
-          <lord-icon src="https://cdn.lordicon.com/wpyrrmcq.json" trigger="hover" colors="primary:#b4b4b4"
-            style="width:24px;height:24px">
-          </lord-icon>
+    <div class="main__container">
+      <div class="main__input">
+        <textarea v-model="inputText" :placeholder="$t('message.placeholder')"></textarea>
+        <div class="input-bottom">
+          <div class="load" @click="restoreText">
+            <lord-icon src="https://cdn.lordicon.com/dafdkyyt.json" trigger="hover" colors="primary:#b4b4b4"
+              style="width:25px;height:25px">
+            </lord-icon>
+          </div>
+          <div class="delete" @click="clearText">
+            <lord-icon src="https://cdn.lordicon.com/wpyrrmcq.json" trigger="hover" colors="primary:#b4b4b4"
+              style="width:24px;height:24px">
+            </lord-icon>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="main__text">
-      <div :class="{ 'translateText': true, 'faded': copied }">{{ apiText }}</div>
-      <div class="main__btn">
-        <div class="status">
-          <div :class="{ 'like-btn': true }">
-            <i @click="likeActivF" :class="{ 'bx bx-like': true, 'bxs-like': likStatus }"></i>
-            {{ likeCount }}
+      <div class="main__text">
+        <div :class="{ 'translateText': true, 'faded': copied }">{{ apiText }}</div>
+        <div class="main__btn">
+          <div class="status">
+            <div :class="{ 'like-btn': true }">
+              <i @click="likeActivF" :class="{ 'bx bx-like': true, 'bxs-like': likStatus }"></i>
+              <!-- {{ likeCount }} -->
+            </div>
+            <div class="dislike-btn" @click="openModal">
+              <i @click="dislikeActiv" :class="{ 'bx bx-dislike': true, 'bxs-dislike': dislikeStatus }"></i>
+            </div>
           </div>
-          <div class="dislike-btn" @click="openModal">
-            <i @click="dislikeActiv" :class="{ 'bx bx-dislike': true, 'bxs-dislike': dislikeStatus }"></i>
-          </div>
-        </div>
-        <ModalVue :isVisible="modalVisible" @update:isVisible="modalVisible = $event" />
-        <div class="copy-btn" @click="copyText">
-          {{ $t('message.copy') }}
-          <lord-icon src="https://cdn.lordicon.com/xpgofwru.json" trigger="hover" colors="primary:#b4b4b4" style="
+          <ModalVue :isVisible="modalVisible" @update:isVisible="modalVisible = $event" />
+          <div class="copy-btn" @click="copyText">
+            {{ $t('message.copy') }}
+            <lord-icon src="https://cdn.lordicon.com/xpgofwru.json" trigger="hover" colors="primary:#b4b4b4" style="
             width:25px;height:25px">
-          </lord-icon>
+            </lord-icon>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="main__bottom">
       <div class="translate-btn">
-        <p>Lotin</p>
+        <p>{{ latin }}</p>
         <i class='bx bx-transfer-alt bx-rotate-180'></i>
-        <p>Kiril</p>
+        <p>{{ cyrl }}</p>
       </div>
       <!-- <a class="telegram-btn" href="https://t.me/mrtarjimon_bot">
         <img src="../img/telegram-logo.svg" alt="telegram icon">
@@ -74,23 +76,20 @@ let copy = ref('nusxa olish')
 const likStatus = ref(false)
 const dislikeStatus = ref(false)
 let likeCount = ref(0)
+let latin = ref('Lotin')
+let cyrl = ref('Kiril')
+let translateWord = ref('')
 
 onMounted(() => {
   likeCount.value = Number(localStorage.getItem('likes')) || 0;
-  dislikeStatus.value = Boolean(localStorage.getItem('dislikeStatus') || false);
-  likStatus.value = Boolean(localStorage.getItem('likStatus') || false);
 });
 
 function likeActivF() {
-  likStatus.value = !likStatus.value
-  localStorage.setItem('likStatus', likStatus.value);
-  localStorage.setItem('likStatus', !dislikeStatus.value);
+  apiText.value ? likStatus.value = !likStatus.value : likStatus.value
   const rect = event.target.getBoundingClientRect();
 
   if (dislikeStatus.value) {
     dislikeStatus.value = !dislikeStatus.value;
-    localStorage.setItem('likStatus', !likStatus.value);
-    localStorage.setItem('dislikeStatus', dislikeStatus.value);
   }
 
   const origin = {
@@ -100,29 +99,22 @@ function likeActivF() {
 
   if (likStatus.value) {
     likeCount.value++
-    localStorage.setItem('likes', likeCount.value);
     confetti({
       particleCount: 100,
       angle: 90,        // Chiqish burchagi, vertikal
-      spread: 70, 
+      spread: 70,
       origin: origin
     });
   } else {
-    likeCount.value = likeCount.value > 0 ? likeCount.value-1 : likeCount.value
-    localStorage.setItem('likes', likeCount.value);
+    likeCount.value = likeCount.value > 0 ? likeCount.value - 1 : likeCount.value
   }
 }
 
 function dislikeActiv() {
-  likeCount.value = likeCount.value > 0 ? likeCount.value - 1 : likeCount.value
-  localStorage.setItem('likes', likeCount.value);
-  dislikeStatus.value = !dislikeStatus.value;
-  localStorage.setItem('dislikeStatus', dislikeStatus.value);
-  localStorage.setItem('dislikeStatus', !likStatus.value);
+  likeCount.value = likeCount.value > 0 ? likeCount.value - 1 : likeCount.value;
+  apiText.value ? dislikeStatus.value = !dislikeStatus.value : false
   if (likStatus.value) {
     likStatus.value = !likStatus.value
-    localStorage.setItem('likStatus', likStatus.value);
-    localStorage.setItem('likStatus', !dislikeStatus.value);
   }
 }
 
@@ -131,25 +123,45 @@ const emit = defineEmits(['update:isVisible']);
 
 // translate api
 const sendRequest = async () => {
-  try {
-    const response = await axios.post('http://128.140.72.180:8070/latin', {
-      word: inputText.value
-    });
-    apiText.value = response.data.result;
-  } catch (error) {
-    console.error('API so`rovda xatolik: ', error);
-    // apiText.value = 'Xatolik yuz berdi';
+  if (inputText.value) {
+
+    translateWord.value = inputText.value[0]
+
+    // kiril yoki lotin alifbosiga tekshirish
+    if (translateWord.value.charCodeAt() >= 65 && translateWord.value.charCodeAt() <= 90 || translateWord.value.charCodeAt() >= 97 && translateWord.value.charCodeAt() <= 122) {
+
+    } else {
+      let word1 = null
+      word1 = cyrl.value
+      cyrl.value = latin.value
+      latin.value = word1
+    }
+
+    try {
+      const response = await axios.post('http://128.140.72.180:8070/latin', {
+        word: inputText.value
+      });
+      apiText.value = response.data.result;
+    } catch (error) {
+      console.error('API so`rovda xatolik: ', error);
+      apiText.value = 'Xatolik yuz berdi';
+    }
+  } else {
+    apiText.value = ''
   }
 };
 
-const debouncedTranslateText = debounce(sendRequest, 5);
+// const debouncedTranslateText = debounce(sendRequest, 500);
 
-watch(() => inputText.value, debouncedTranslateText);
+watch(() => inputText.value, sendRequest);
 
 // delete function
 function clearText() {
   lastInputText.value = inputText.value;
-  inputText.value = '';
+  inputText.value = ''
+  likStatus.value = false
+  dislikeStatus.value = false
+  likeCount.value > 0 ? likeCount.value = likeCount.value - 1 : likeCount.value
 }
 
 // load function
@@ -162,14 +174,14 @@ function restoreText() {
 // nusxa olish
 function copyText() {
   if (inputText.value) {
-    navigator.clipboard.writeText(inputText.value).then(() => {
+    navigator.clipboard.writeText(apiText.value).then(() => {
       copied.value = true;
       setTimeout(() => { copied.value = false; }, 300);
       // alert('Matndan nusxa olindi');
     }).catch(err => {
       console.error('Nusxalashda xatolik yuz berdi: ', err);
       alert('Xatolik: Matnni nusxalab bo`lmadi.');
-        });
+    });
   } else {
     alert('Matn kiritilmagan');
   }
@@ -177,24 +189,23 @@ function copyText() {
 
 // open modal
 function openModal() {
-  modalVisible.value = true;
+  dislikeStatus.value ? modalVisible.value = true : modalVisible.value = false
 }
 
 </script>
 
 <style lang="scss" scoped>
-
 .main {
-
   // .main__input
 
   &__input {
     border: 1px solid #444;
     background: #242424;
     border-radius: 11px;
-    max-width: 390px;
+    max-width: 100%;
     height: 200px;
     position: relative;
+
     textarea {
       overflow-y: scroll;
       background: none;
@@ -217,7 +228,7 @@ function openModal() {
     border: 1px solid #444;
     background: #242424;
     border-radius: 11px;
-    max-width: 390px;
+    max-width: 100%;
     height: 200px;
     position: relative;
     margin-top: 16px;
@@ -243,8 +254,44 @@ function openModal() {
   }
 }
 
+@media only screen and (min-width: 1000px) {
+
+  .container {
+      max-width: 90%;
+    }
+
+  .main__container {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 20px;
+  }
+
+  .main__input,
+  .main__text {
+    height: 400px;
+  }
+
+  .main__text {
+    margin-top: 0px;
+  }
+
+  .main__input>textarea {
+    overflow: hidden;
+    height: 85%;
+    overflow-y: auto;
+  }
+
+  .main__text>.translateText {
+    overflow: hidden;
+    height: 85%;
+    overflow-y: auto;
+  }
+}
+
 .container {
-  max-width: 390px;
+  max-width: 90%;
   padding: 0px 25px;
   margin: 0 auto;
 }
@@ -259,7 +306,8 @@ function openModal() {
   gap: 5px;
 }
 
-.load, .delete {
+.load,
+.delete {
   width: 35px;
   height: 35px;
   padding: 5px;
@@ -268,6 +316,7 @@ function openModal() {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   lord-icon {
     width: 25px;
@@ -288,6 +337,8 @@ function openModal() {
   width: 100%;
   height: 185px;
   resize: none;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .status {
@@ -297,7 +348,8 @@ function openModal() {
   gap: 5px;
 }
 
-.like-btn, .dislike-btn,
+.like-btn,
+.dislike-btn,
 .copy-btn {
   color: #ffffff76;
   font-size: 16px;
@@ -311,6 +363,7 @@ function openModal() {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .like-btn,
@@ -325,7 +378,8 @@ function openModal() {
 
 .bx {}
 
-.bx-like, .bx-dislike {
+.bx-like,
+.bx-dislike {
   font-size: 24px;
   color: #b4b4b4;
 }
@@ -385,5 +439,4 @@ function openModal() {
 .faded {
   opacity: 0.3;
 }
-
 </style>

@@ -108,12 +108,18 @@
     
 }
 
+@media only screen and (min-width:1000px) {
+    .info {
+        max-width: 90%;
+    }
+}
+
 .file {
     margin: 0 auto;
 }
 
 .container {
-    max-width: 390px;
+    // max-width: 390px;
     padding: 0px 25px;
     margin: 0 auto;
 

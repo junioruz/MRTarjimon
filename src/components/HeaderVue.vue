@@ -133,6 +133,7 @@ import { useI18n } from 'vue-i18n';
     padding: 8px 6px;
     width: 80px;
     border-radius: 8px;
+    cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     
   }

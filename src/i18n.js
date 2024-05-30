@@ -105,8 +105,8 @@ const messages = {
 };
 
 const i18n = createI18n({
-    locale: 'uzLatn', // default language
-    fallbackLocale: 'uzLatn', // used when the requested language is not available
+    locale: 'uzLatn',
+    fallbackLocale: 'uzLatn',
     messages,
 });
 
