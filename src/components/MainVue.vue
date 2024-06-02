@@ -122,24 +122,57 @@ const props = defineProps(['isVisible']);
 const emit = defineEmits(['update:isVisible']);
 
 // translate api
+// const sendRequest = async () => {
+//   if (inputText.value) {
+
+//     translateWord.value = inputText.value[0]
+
+//     // kiril yoki lotin alifbosiga tekshirish
+//     if (translateWord.value.charCodeAt() >= 65 && translateWord.value.charCodeAt() <= 90 || translateWord.value.charCodeAt() >= 97 && translateWord.value.charCodeAt() <= 122) {
+
+//     } else {
+//       let word1 = null
+//       word1 = cyrl.value
+//       cyrl.value = latin.value
+//       latin.value = word1
+//     }
+
+//     try {
+//       const response = await axios.post('http://128.140.72.180:8070/latin', {
+//         word: inputText.value
+//       });
+//       apiText.value = response.data.result;
+//     } catch (error) {
+//       console.error('API so`rovda xatolik: ', error);
+//       apiText.value = 'Xatolik yuz berdi';
+//     }
+//   } else {
+//     apiText.value = ''
+//   }
+// };
+
 const sendRequest = async () => {
   if (inputText.value) {
-
-    translateWord.value = inputText.value[0]
+    translateWord.value = inputText.value[0];
 
     // kiril yoki lotin alifbosiga tekshirish
     if (translateWord.value.charCodeAt() >= 65 && translateWord.value.charCodeAt() <= 90 || translateWord.value.charCodeAt() >= 97 && translateWord.value.charCodeAt() <= 122) {
-
+      // Do nothing specific here
     } else {
-      let word1 = null
-      word1 = cyrl.value
-      cyrl.value = latin.value
-      latin.value = word1
+      let word1 = null;
+      word1 = cyrl.value;
+      cyrl.value = latin.value;
+      latin.value = word1;
     }
 
     try {
       const response = await axios.post('http://128.140.72.180:8070/latin', {
         word: inputText.value
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN_HERE'  // Agar kerak bo'lsa
+        }
       });
       apiText.value = response.data.result;
     } catch (error) {
@@ -147,9 +180,10 @@ const sendRequest = async () => {
       apiText.value = 'Xatolik yuz berdi';
     }
   } else {
-    apiText.value = ''
+    apiText.value = '';
   }
 };
+
 
 // const debouncedTranslateText = debounce(sendRequest, 500);
 
