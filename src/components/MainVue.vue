@@ -170,8 +170,7 @@ const sendRequest = async () => {
         word: inputText.value
       }, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_ACCESS_TOKEN_HERE'  // Agar kerak bo'lsa
+          'Content-Type': 'application/json'
         }
       });
       apiText.value = response.data.result;
